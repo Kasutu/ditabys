@@ -7,15 +7,14 @@ import java.sql.SQLException;
 import com.splitscale.ditabys.config.DBconfig;
 import com.splitscale.ditabys.config.MysqlConfig;
 
-public class MysqlDriver implements DBdriverConnector {
+public class DatabaseDriver {
 
-  DBconfig config;
+  private DBconfig config;
 
-  public MysqlDriver() {
-    config = new MysqlConfig();
+  public DatabaseDriver() {
+    this.config = new MysqlConfig();
   }
 
-  @Override
   public Connection getConnection() throws SQLException {
     // assign db parameters
     String url = config.getUrl();

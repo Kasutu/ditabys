@@ -3,29 +3,22 @@ package com.splitscale.ditabys.config;
 import java.util.Properties;
 
 public class MysqlConfig implements DBconfig {
-  private String url;
-  private String username;
-  private String password;
+  Properties props;
 
   public MysqlConfig() {
     PropsLoader loader = new MysqlPropsLoader();
-    Properties props = loader.loadProps();
-
-    url = props.getProperty("mysql.url");
-    username = props.getProperty("mysql.username");
-    password = props.getProperty("mysql.password");
+    props = loader.loadProps();
   }
 
   public String getUrl() {
-    return url;
+    return props.getProperty("mysql.url");
   }
 
   public String getUsername() {
-    return username;
+    return props.getProperty("mysql.username");
   }
 
   public String getPassword() {
-    return password;
+    return props.getProperty("mysql.password");
   }
-
 }
