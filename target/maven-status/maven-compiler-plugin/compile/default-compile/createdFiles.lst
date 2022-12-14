@@ -1,0 +1,6 @@
+com\splitscale\ditabys\config\MysqlConfig.class
+com\splitscale\ditabys\config\MysqlPropsLoader.class
+com\splitscale\ditabys\repositories\UserRepositoryInteractor.class
+com\splitscale\ditabys\config\DBconfig.class
+com\splitscale\ditabys\driver\DatabaseDriver.class
+com\splitscale\ditabys\config\PropsLoader.class
