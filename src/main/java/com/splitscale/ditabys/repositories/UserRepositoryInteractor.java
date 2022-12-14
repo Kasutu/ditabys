@@ -9,9 +9,7 @@ import java.util.UUID;
 import com.splitscale.ditabys.driver.DatabaseDriver;
 import com.splitscale.fordastore.core.repositories.UserRepository;
 import com.splitscale.fordastore.core.user.User;
-import com.splitscale.fordastore.core.user.UserBuilder;
 import com.splitscale.fordastore.core.user.UserRequest;
-import com.splitscale.fordastore.core.user.register.UserClaims;
 
 public class UserRepositoryInteractor implements UserRepository {
 
@@ -28,7 +26,7 @@ public class UserRepositoryInteractor implements UserRepository {
     pstmt.setString(1, whereVal);
     ResultSet rs = pstmt.executeQuery();
 
-    User user = new UserBuilder();
+    User user = new User();
 
     if (rs.next() && rs.getString("uid").equals(whereVal)) {
       user.setUsername(rs.getString("username"));
@@ -42,14 +40,14 @@ public class UserRepositoryInteractor implements UserRepository {
   }
 
   @Override
-  public UserClaims add(UserRequest userRequest) {
+  public User add(UserRequest userRequest) {
     String query = "INSERT INTO user (username, password, uid) VALUES (?, ?, ?)";
 
     final String username = userRequest.getUsername();
     final String password = userRequest.getPassword();
     String uid = UUID.randomUUID().toString();
 
-    UserClaims claims = new UserClaims();
+    User claims = new User();
     claims.setUid(uid);
     claims.setUsername(username);
 

@@ -8,9 +8,7 @@ import org.junit.Test;
 import com.splitscale.ditabys.repositories.UserRepositoryInteractor;
 import com.splitscale.fordastore.core.repositories.UserRepository;
 import com.splitscale.fordastore.core.user.User;
-import com.splitscale.fordastore.core.user.UserBuilder;
 import com.splitscale.fordastore.core.user.UserRequest;
-import com.splitscale.fordastore.core.user.register.UserClaims;
 import com.splitscale.loggerist.Loggerist;
 
 public class UserRepoTest {
@@ -24,7 +22,7 @@ public class UserRepoTest {
   @Before
   public void setup() {
     conn = new UserRepositoryInteractor();
-    user = new UserBuilder();
+    user = new User();
     userRequest = new UserRequest("username", "pwd");
 
     user.setUid("some-id-here");
@@ -38,7 +36,7 @@ public class UserRepoTest {
     UserRepository repo = new UserRepositoryInteractor();
 
     try {
-      UserClaims claims = repo.add(userRequest);
+      User claims = repo.add(userRequest);
 
       Loggerist.info(claims.getUsername());
       Loggerist.info(claims.getUid());
