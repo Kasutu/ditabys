@@ -47,36 +47,24 @@ public class UserRepositoryInteractor implements UserRepository {
     final String password = userRequest.getPassword();
     String uid = UUID.randomUUID().toString();
 
-    User claims = new User();
-    claims.setUid(uid);
-    claims.setUsername(username);
-
-    Connection conn;
+    User user = new User();
+    user.setUid(uid);
+    user.setUsername(username);
+    user.setPassword(password);
 
     try {
-      conn = db.getConnection();
+      Connection conn = db.getConnection();
 
       PreparedStatement pstmt = conn.prepareStatement(query);
       pstmt.setString(1, username);
       pstmt.setString(2, password);
       pstmt.setString(3, uid);
 
-      int rowAffected = pstmt.executeUpdate();
-
-      if (rowAffected == 1) {
-
-        ResultSet rs = pstmt.getGeneratedKeys();
-
-        if (rs.next()) {
-          long id = rs.getLong(1);
-          claims.setId(id);
-        }
-
-      }
+      pstmt.executeUpdate();
 
       conn.close();
 
-      return claims;
+      return user;
     } catch (SQLException e) {
       return null;
     }
