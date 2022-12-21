@@ -6,7 +6,7 @@ public class MysqlConfig implements DBconfig {
   Properties props;
 
   public MysqlConfig() {
-    PropsLoader loader = new MysqlPropsLoader();
+    PropsLoader loader = new StoreDbPropsLoader();
     props = loader.loadProps();
   }
 
