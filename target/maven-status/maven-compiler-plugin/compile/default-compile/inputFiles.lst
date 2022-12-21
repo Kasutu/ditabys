@@ -1,6 +1,6 @@
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\DBconfig.java
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlConfig.java
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\DatabaseDriver.java
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlPropsLoader.java
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\PropsLoader.java
-D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\repositories\UserRepositoryInteractor.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\DatabaseDriver.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\DBconfig.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\repositories\UserRepositoryInteractor.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlConfig.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\PropsLoader.java
+D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlPropsLoader.java
