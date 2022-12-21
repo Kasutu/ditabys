@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class MysqlPropsLoader implements PropsLoader {
-  private String path = "src/main/resources/mysql.properties";
+public class StoreDbPropsLoader implements PropsLoader {
+  private String path = "src/main/resources/store-db.properties";
 
-  public MysqlPropsLoader() {
+  public StoreDbPropsLoader() {
     // def
   }
 
