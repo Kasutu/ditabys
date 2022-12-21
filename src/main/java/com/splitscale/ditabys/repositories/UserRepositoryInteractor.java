@@ -1,5 +1,6 @@
 package com.splitscale.ditabys.repositories;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -40,7 +41,7 @@ public class UserRepositoryInteractor implements UserRepository {
   }
 
   @Override
-  public User add(UserRequest userRequest) {
+  public User add(UserRequest userRequest) throws IOException {
     String query = "INSERT INTO user (username, password, uid) VALUES (?, ?, ?)";
 
     final String username = userRequest.getUsername();
@@ -66,34 +67,34 @@ public class UserRepositoryInteractor implements UserRepository {
 
       return user;
     } catch (SQLException e) {
-      return null;
+      throw new IOException("Could not add user to database");
     }
   }
 
   @Override
-  public User findByUID(String uid) {
+  public User findByUID(String uid) throws IOException {
     String query = "SELECT * FROM user WHERE uid = " + "?" + ";";
 
     try {
       return getUserFromDb(query, uid);
     } catch (SQLException e) {
-      return null;
+      throw new IOException("Could not find user by uid");
     }
   }
 
   @Override
-  public User findByUsername(String username) {
+  public User findByUsername(String username) throws IOException {
     String query = "SELECT * FROM user WHERE username = ?;";
 
     try {
       return getUserFromDb(query, username);
     } catch (SQLException e) {
-      return null;
+      throw new IOException("Could not find user by username");
     }
   }
 
   @Override
-  public boolean update(Long id, UserRequest userRequest) throws Exception {
+  public boolean update(Long id, UserRequest userRequest) throws IOException {
     final String query = "UPDATE user SET username = ?, password = ? WHERE user_id = ?;";
 
     final String username = userRequest.getUsername();
@@ -115,7 +116,7 @@ public class UserRepositoryInteractor implements UserRepository {
 
       return true;
     } catch (SQLException e) {
-      return false;
+      throw new IOException("Failed to update user");
     }
   }
 
