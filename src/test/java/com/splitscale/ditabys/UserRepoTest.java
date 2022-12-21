@@ -9,7 +9,6 @@ import com.splitscale.ditabys.repositories.UserRepositoryInteractor;
 import com.splitscale.fordastore.core.repositories.UserRepository;
 import com.splitscale.fordastore.core.user.User;
 import com.splitscale.fordastore.core.user.UserRequest;
-import com.splitscale.loggerist.Loggerist;
 
 public class UserRepoTest {
 
@@ -38,14 +37,14 @@ public class UserRepoTest {
     try {
       User claims = repo.add(userRequest);
 
-      Loggerist.info(claims.getUsername());
-      Loggerist.info(claims.getUid());
-      Loggerist.info(claims.getId().toString());
+      System.out.println(claims.getUsername());
+      System.out.println(claims.getUid());
+      System.out.println(claims.getId().toString());
 
       assertNotNull(claims);
 
     } catch (Exception e) {
-      Loggerist.error(e.getMessage());
+      System.out.println(e.getMessage());
     }
 
   }
@@ -56,12 +55,12 @@ public class UserRepoTest {
     try {
       User foundUser = conn.findByUID("some-id-here");
 
-      Loggerist.info(foundUser.toString());
+      System.out.println(foundUser.toString());
 
       assertNotNull(foundUser);
 
     } catch (Exception e) {
-      Loggerist.error(e.getMessage());
+      System.out.println(e.getMessage());
     }
 
   }
@@ -72,12 +71,12 @@ public class UserRepoTest {
     try {
       User foundUser = conn.findByUsername("gem");
 
-      Loggerist.info(foundUser.toString());
+      System.out.println(foundUser.toString());
 
       assertNotNull(foundUser);
 
     } catch (Exception e) {
-      Loggerist.error(e.getMessage());
+      System.out.println(e.getMessage());
     }
 
   }
