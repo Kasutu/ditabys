@@ -1,9 +1,23 @@
 package com.splitscale.ditabys.config;
 
-public interface DBconfig {
-  String getUrl();
+import java.util.Properties;
 
-  String getUsername();
+public class DBConfig {
+  Properties properties;
 
-  String getPassword();
+  public DBConfig(Properties properties) {
+    this.properties = properties;
+  }
+
+  public String getUrl() {
+    return properties.getProperty("mysql.url");
+  }
+
+  public String getUsername() {
+    return properties.getProperty("mysql.username");
+  }
+
+  public String getPassword() {
+    return properties.getProperty("mysql.password");
+  }
 }

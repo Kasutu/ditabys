@@ -1,36 +1,35 @@
 package com.splitscale.ditabys.repositories;
 
-import java.security.PublicKey;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.splitscale.ditabys.driver.AuthDbDriver;
 import com.splitscale.ditabys.driver.DatabaseDriver;
-import com.splitscale.shield.auth.Token;
-import com.splitscale.shield.repository.AuthRepository;
+import com.splitscale.fordastore.core.auth.PublicKey;
+import com.splitscale.fordastore.core.repositories.AuthRepository;
 
 public class AuthRepositoryInteractor implements AuthRepository {
   DatabaseDriver db;
 
   public AuthRepositoryInteractor() {
-    this.db = new DatabaseDriver();
+    this.db = new AuthDbDriver();
   }
 
   @Override
-  public boolean deleteByID(Long arg0) {
-    // TODO Auto-generated method stub
+  public boolean deleteByID(String arg0) {
     return false;
   }
 
   @Override
   public PublicKey getByID(String arg0) {
-    // TODO Auto-generated method stub
     return null;
   }
 
   @Override
-  public boolean insert(Token token) {
-    String query = "INSERT INTO token (uid, public_key) VALUES (?, ?)";
+  public boolean insert(PublicKey token) throws IOException {
+    String query = "INSERT INTO public_key (key_id, key_value) VALUES (UUID_TO_BIN(?), ?);";
     Connection conn;
 
     try {
@@ -45,13 +44,12 @@ public class AuthRepositoryInteractor implements AuthRepository {
 
       return true;
     } catch (SQLException e) {
-      return false;
+      throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
   }
 
   @Override
-  public boolean update(Token arg0) {
-    // TODO Auto-generated method stub
+  public boolean update(PublicKey arg0) throws IOException {
     return false;
   }
 

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.UUID;
 
 import com.splitscale.ditabys.driver.DatabaseDriver;
+import com.splitscale.ditabys.driver.StoreDbDriver;
 import com.splitscale.fordastore.core.repositories.UserRepository;
 import com.splitscale.fordastore.core.user.User;
 import com.splitscale.fordastore.core.user.UserRequest;
@@ -17,7 +18,7 @@ public class UserRepositoryInteractor implements UserRepository {
   DatabaseDriver db;
 
   public UserRepositoryInteractor() {
-    this.db = new DatabaseDriver();
+    this.db = new StoreDbDriver();
   }
 
   private User getUserFromDb(String query, String whereVal) throws SQLException {
@@ -42,7 +43,7 @@ public class UserRepositoryInteractor implements UserRepository {
 
   @Override
   public User add(UserRequest userRequest) throws IOException {
-    String query = "INSERT INTO user (username, password, uid) VALUES (?, ?, ?)";
+    String query = "INSERT INTO user (user_id, username, password) VALUES (UUID_TO_BIN(?), ?, ?);";
 
     final String username = userRequest.getUsername();
     final String password = userRequest.getPassword();
@@ -57,9 +58,9 @@ public class UserRepositoryInteractor implements UserRepository {
       Connection conn = db.getConnection();
 
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, username);
-      pstmt.setString(2, password);
-      pstmt.setString(3, uid);
+      pstmt.setString(1, uid);
+      pstmt.setString(2, username);
+      pstmt.setString(3, password);
 
       pstmt.executeUpdate();
 
@@ -67,7 +68,7 @@ public class UserRepositoryInteractor implements UserRepository {
 
       return user;
     } catch (SQLException e) {
-      throw new IOException("Could not add user to database");
+      throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
   }
 
