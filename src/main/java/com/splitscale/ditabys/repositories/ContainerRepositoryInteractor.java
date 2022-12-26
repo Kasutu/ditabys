@@ -63,9 +63,25 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public Container getByContainerID(long arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public Container getByContainerID(long container_id) throws IOException {
+        final String query = "Select * From container WHERE container_id = ?";
+        Container container = new Container();
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setLong(1, container_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                container.setContainerID(rs.getLong("container_id"));
+                container.setName(rs.getString("container_title"));
+            }
+            conn.close();
+            return container;
+        } catch (SQLException e){
+            throw new IOException("Could not find this container ID");
+        }
     }
 
     @Override
