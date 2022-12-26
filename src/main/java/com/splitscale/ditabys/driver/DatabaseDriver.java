@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.splitscale.ditabys.config.DBconfig;
-import com.splitscale.ditabys.config.MysqlConfig;
+import com.splitscale.ditabys.config.DBConfig;
 
 public class DatabaseDriver {
 
-  private DBconfig config;
+  private DBConfig config;
 
-  public DatabaseDriver() {
-    this.config = new MysqlConfig();
+  public DatabaseDriver(DBConfig config) {
+    this.config = config;
   }
 
   public Connection getConnection() throws SQLException {

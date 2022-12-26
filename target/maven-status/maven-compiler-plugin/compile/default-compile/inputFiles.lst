@@ -1,6 +1,16 @@
+<<<<<<< HEAD
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\DatabaseDriver.java
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\DBconfig.java
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\repositories\UserRepositoryInteractor.java
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlConfig.java
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\PropsLoader.java
 D:\SCHOOL\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\MysqlPropsLoader.java
+=======
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\StoreDbDriver.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\DBConfig.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\DatabaseDriver.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\repositories\AuthRepositoryInteractor.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\config\PropsLoader.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\repositories\UserRepositoryInteractor.java
+D:\dev\se_projects\splitscale\ditabys\src\main\java\com\splitscale\ditabys\driver\AuthDbDriver.java
+>>>>>>> 39550ef82d29206ad8b9c05793a790d597bf265a

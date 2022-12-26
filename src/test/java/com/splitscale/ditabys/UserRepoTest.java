@@ -2,7 +2,6 @@ package com.splitscale.ditabys;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import com.splitscale.ditabys.repositories.UserRepositoryInteractor;
@@ -11,53 +10,19 @@ import com.splitscale.fordastore.core.user.User;
 import com.splitscale.fordastore.core.user.UserRequest;
 
 public class UserRepoTest {
-
-  private UserRepository conn;
-
-  private User user;
-
-  private UserRequest userRequest;
-
-  @Before
-  public void setup() {
-    conn = new UserRepositoryInteractor();
-    user = new User();
-    userRequest = new UserRequest("username", "pwd");
-
-    user.setUid("some-id-here");
-    user.setUsername("gem");
-    user.setPassword("pwd");
-  }
-
   @Test
   public void shouldAddUserSuccessfully() {
 
+    UserRequest userRequest = new UserRequest("username", "pwd");
     UserRepository repo = new UserRepositoryInteractor();
 
     try {
-      User claims = repo.add(userRequest);
+      User user = repo.add(userRequest);
 
-      System.out.println(claims.getUsername());
-      System.out.println(claims.getUid());
-      System.out.println(claims.getId().toString());
+      System.out.println(user.getUsername());
+      System.out.println(user.getUid());
 
-      assertNotNull(claims);
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-  }
-
-  @Test
-  public void findUserByUid() {
-
-    try {
-      User foundUser = conn.findByUID("some-id-here");
-
-      System.out.println(foundUser.toString());
-
-      assertNotNull(foundUser);
+      assertNotNull(user);
 
     } catch (Exception e) {
       System.out.println(e.getMessage());
@@ -65,19 +30,4 @@ public class UserRepoTest {
 
   }
 
-  @Test
-  public void findUserByUsername() {
-
-    try {
-      User foundUser = conn.findByUsername("gem");
-
-      System.out.println(foundUser.toString());
-
-      assertNotNull(foundUser);
-
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-  }
 }
