@@ -1,18 +1,59 @@
 package com.splitscale.ditabys.repositories;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
+import com.splitscale.ditabys.driver.DatabaseDriver;
+import com.splitscale.ditabys.driver.StoreDbDriver;
 import com.splitscale.fordastore.core.container.Container;
 import com.splitscale.fordastore.core.container.ContainerRequest;
 import com.splitscale.fordastore.core.repositories.ContainerRepository;
 
 public class ContainerRepositoryInteractor implements ContainerRepository {
+    DatabaseDriver db;
+
+    public ContainerRepositoryInteractor() {
+        this.db = new StoreDbDriver();
+    }
 
     @Override
-    public Container add(ContainerRequest arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public Container add(ContainerRequest containerRequest) throws IOException {
+        final String query = "INSERT INTO container (container_id, container_title, user_id) VALUES (null,?,UUID_TO_BIN(?))";
+
+        final String containerTitle = containerRequest.getName();
+        final String userId = containerRequest.getUid();
+
+        Container container = new Container();
+        container.setName(containerTitle);
+        container.setUid(userId);
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, containerTitle);
+            pstmt.setString(2, userId);
+
+
+            int rowAffected = pstmt.executeUpdate();
+            if (rowAffected == 1) {
+              ResultSet rs = pstmt.getGeneratedKeys();
+              if (rs.next()) {
+                long id = rs.getLong(1);
+                container.setContainerID(id);
+              }
+            }
+
+            conn.close();
+            return container;
+
+        } catch (SQLException e){
+            throw new IOException("Could not add a new container to database" + e.getMessage());
+        }
     }
 
     @Override

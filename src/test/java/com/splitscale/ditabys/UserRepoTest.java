@@ -13,7 +13,7 @@ public class UserRepoTest {
   @Test
   public void shouldAddUserSuccessfully() {
 
-    UserRequest userRequest = new UserRequest("username", "pwd");
+    UserRequest userRequest = new UserRequest("shawn", "pwd");
     UserRepository repo = new UserRepositoryInteractor();
 
     try {

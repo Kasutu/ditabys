@@ -14,7 +14,7 @@ public class PropsLoader {
     // default
   }
 
-  public static DBConfig loadProps(String path) {
+  public static DBconfig loadProps(String path) {
     Properties props = new Properties();
     InputStream fileStream;
 
@@ -28,7 +28,7 @@ public class PropsLoader {
       e.printStackTrace();
     }
 
-    return new DBConfig(props);
+    return new DBconfig(props);
   }
 
 }

@@ -2,10 +2,10 @@ package com.splitscale.ditabys.config;
 
 import java.util.Properties;
 
-public class DBConfig {
+public class DBconfig {
   Properties properties;
 
-  public DBConfig(Properties properties) {
+  public DBconfig(Properties properties) {
     this.properties = properties;
   }
 
