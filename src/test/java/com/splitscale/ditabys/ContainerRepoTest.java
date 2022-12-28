@@ -46,5 +46,22 @@ public class ContainerRepoTest {
             System.out.println(e.getMessage());
         }
     }
-    
+    @Test 
+    public void shouldShowUIDSuccessfully(){
+        ContainerRepositoryInteractor repo = new ContainerRepositoryInteractor();
+
+        try{
+            Container container = repo.getByUid("e7f60aa1-cc65-44bd-9150-2d9da00cef5b");
+
+            System.out.println(container.getName());
+            System.out.println(container.getContainerID());  
+              } catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test 
+    public void shouldShowListofContainerTitle(){
+        
+    }
 }
