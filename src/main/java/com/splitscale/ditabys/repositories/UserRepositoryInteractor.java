@@ -22,17 +22,12 @@ public class UserRepositoryInteractor implements UserRepository {
   }
 
   @Override
-  public User add(UserRequest userRequest) throws IOException {
+  public void add(UserRequest userRequest) throws IOException {
     String query = "INSERT INTO user (user_id, username, password) VALUES (UUID_TO_BIN(?), ?, ?);";
 
     final String username = userRequest.getUsername();
     final String password = userRequest.getPassword();
     String uid = UUID.randomUUID().toString();
-
-    User user = new User();
-    user.setUid(uid);
-    user.setUsername(username);
-    user.setPassword(password);
 
     try {
       Connection conn = db.getConnection();
@@ -46,7 +41,6 @@ public class UserRepositoryInteractor implements UserRepository {
 
       conn.close();
 
-      return user;
     } catch (SQLException e) {
       throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
