@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import com.splitscale.ditabys.driver.AuthDbDriver;
 import com.splitscale.ditabys.driver.DatabaseDriver;
-import com.splitscale.fordastore.core.auth.PublicKey;
+import com.splitscale.fordastore.core.auth.AuthPublicKey;
 import com.splitscale.fordastore.core.repositories.AuthRepository;
 
 public class AuthRepositoryInteractor implements AuthRepository {
@@ -18,17 +18,17 @@ public class AuthRepositoryInteractor implements AuthRepository {
   }
 
   @Override
-  public boolean deleteByID(String arg0) {
-    return false;
+  public void deleteByUid(String uid) {
+    // implement me
   }
 
   @Override
-  public PublicKey getByID(String arg0) {
+  public AuthPublicKey getByUid(String uid) {
     return null;
   }
 
   @Override
-  public boolean insert(PublicKey token) throws IOException {
+  public void insert(AuthPublicKey token) throws IOException {
     String query = "INSERT INTO public_key (key_id, key_value) VALUES (UUID_TO_BIN(?), ?);";
     Connection conn;
 
@@ -42,15 +42,14 @@ public class AuthRepositoryInteractor implements AuthRepository {
 
       conn.close();
 
-      return true;
     } catch (SQLException e) {
       throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
   }
 
   @Override
-  public boolean update(PublicKey arg0) throws IOException {
-    return false;
+  public void update(AuthPublicKey arg0) throws IOException {
+    // implement me
   }
 
 }
