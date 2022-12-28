@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.splitscale.ditabys.driver.DatabaseDriver;
@@ -22,7 +23,7 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public Container add(ContainerRequest containerRequest) throws IOException {
+    public void add(ContainerRequest containerRequest) throws IOException {
         final String query = "INSERT INTO container (container_id, container_title, user_id) VALUES (null,?,UUID_TO_BIN(?))";
 
         final String containerTitle = containerRequest.getName();
@@ -49,7 +50,7 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
             }
 
             conn.close();
-            return container;
+            return;
 
         } catch (SQLException e){
             throw new IOException("Could not add a new container to database" + e.getMessage());
@@ -57,9 +58,9 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public boolean delete(long arg0) throws IOException {
+    public void delete(long arg0) throws IOException {
         // TODO Auto-generated method stub
-        return false;
+        return;
     }
 
     @Override
@@ -85,15 +86,49 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public Container getByUid(String arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public Container getByUid(String user_id) throws IOException {
+        final String query = "Select * From user WHERE user_id = UUID_TO_BIN(?)";
+        Container container = new Container();
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, user_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                container.setUid(rs.getString("user_id"));
+            }
+            conn.close();
+            return container;
+
+        } catch(SQLException e){
+            throw new IOException("Could not find this UID");
+        }
     }
 
     @Override
-    public List<Container> getListByName(String arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Container> getListByName(String container_title) throws IOException {
+        final String query = "SELECT * FROM container WHERE container_title LIKE ?";
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query); 
+            pstmt.setString(1, "%" + container_title + "%");
+            ResultSet rs = pstmt.executeQuery();
+            List<Container> containers = new ArrayList<>();
+
+
+            while(rs.next()){
+                Container container = new Container();
+                container.setName(rs.getString("container_title"));
+                containers.add(container);
+            }
+            conn.close();
+            return containers;
+        } catch(SQLException e){
+            throw new IOException("Could not find any list of this container title");
+        }
     }
 
     @Override
@@ -103,9 +138,9 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public Container update(Container arg0) throws IOException {
+    public void update(Container arg0) throws IOException {
         // TODO Auto-generated method stub
-        return null;
+        return;
     }
 
 

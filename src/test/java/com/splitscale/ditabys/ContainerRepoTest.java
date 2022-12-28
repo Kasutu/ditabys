@@ -1,7 +1,12 @@
 package com.splitscale.ditabys;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.contains;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -19,18 +24,8 @@ public class ContainerRepoTest {
         ContainerRepository repo = new ContainerRepositoryInteractor();
 
 
-        try{
-            Container container = repo.add(containerRequest);
+            assertDoesNotThrow(() -> repo.add(containerRequest));
 
-            System.out.println(container.getUid());
-            System.out.println(container.getName());
-            System.out.println(container.getContainerID());
-
-            assertNotNull(container);
-
-        } catch(Exception e){
-            System.out.println(e.getMessage());
-        }
     }
 
     @Test
@@ -61,7 +56,15 @@ public class ContainerRepoTest {
     }
 
     @Test 
-    public void shouldShowListofContainerTitle(){
-        
+    public void shouldShowListofContainerTitle() throws IOException{
+        ContainerRepositoryInteractor repo = new ContainerRepositoryInteractor();
+
+            List<Container> containers = repo.getListByName("forda");
+            assertNotNull(containers);
+            assertEquals(3, containers.size());
+            assertEquals("fordaStore", containers.get(0).getName());
+            assertEquals("fordaWIN", containers.get(1).getName());
+            assertEquals("fordaSheeesh", containers.get(2).getName());
+
     }
 }
