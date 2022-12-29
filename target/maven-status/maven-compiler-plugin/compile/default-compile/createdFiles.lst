@@ -1,7 +1,0 @@
-com\splitscale\ditabys\driver\AuthDbDriver.class
-com\splitscale\ditabys\repositories\AuthRepositoryInteractor.class
-com\splitscale\ditabys\repositories\UserRepositoryInteractor.class
-com\splitscale\ditabys\driver\DatabaseDriver.class
-com\splitscale\ditabys\driver\StoreDbDriver.class
-com\splitscale\ditabys\config\PropsLoader.class
-com\splitscale\ditabys\config\DBConfig.class
