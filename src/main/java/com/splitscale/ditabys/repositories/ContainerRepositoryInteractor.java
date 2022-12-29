@@ -132,14 +132,43 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
     }
 
     @Override
-    public List<Container> getListByUid(String arg0) throws IOException {
-        // TODO Auto-generated method stub
-        return null;
+    public List<Container> getListByUid(String container_id) throws IOException {
+        final String query = "SELECT * FROM container WHERE container_id = ?";
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query); 
+            pstmt.setString(1, container_id);
+            ResultSet rs = pstmt.executeQuery();
+            List<Container> containers = new ArrayList<>();
+
+
+            while(rs.next()){
+                Container container = new Container();
+                container.setName(rs.getString("container_id"));
+                containers.add(container);
+            }
+            conn.close();
+            return containers;
+
+        }catch(SQLException e){
+            throw new IOException("Could not get a list of this UID");
+        }
     }
 
     @Override
-    public void update(Container arg0) throws IOException {
-        // TODO Auto-generated method stub
+    public void update(Container container) throws IOException {
+        final String query = "UPDATE container SET container_title = ? WHERE container_id = ?";
+
+        try{
+            Connection conn = db.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(query); 
+            pstmt.setString(1, container.getName());
+            pstmt.setLong(2, container.getContainerID());
+            pstmt.executeUpdate();
+        }catch(SQLException e){
+            throw new IOException("Unable to update Container");
+        }
         return;
     }
 

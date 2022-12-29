@@ -65,6 +65,20 @@ public class ContainerRepoTest {
             assertEquals("fordaStore", containers.get(0).getName());
             assertEquals("fordaWIN", containers.get(1).getName());
             assertEquals("fordaSheeesh", containers.get(2).getName());
+    }
+
+    @Test
+    public void shouldUpdateContainerSuccessfully() throws IOException{
+        ContainerRequest containerRequest = new ContainerRequest("e7f60aa1-cc65-44bd-9150-2d9da00cef5b", "title");
+        ContainerRepository repo = new ContainerRepositoryInteractor();
+
+        Container container = new Container();
+        container.setName("Wow");
+
+        repo.add(containerRequest);
+        assertDoesNotThrow(() -> repo.update(container));
+
 
     }
 }
+
