@@ -21,38 +21,13 @@ public class UserRepositoryInteractor implements UserRepository {
     this.db = new StoreDbDriver();
   }
 
-  private User getUserFromDb(String query, String whereVal) throws SQLException {
-    Connection conn = db.getConnection();
-
-    PreparedStatement pstmt = conn.prepareStatement(query);
-    pstmt.setString(1, whereVal);
-    ResultSet rs = pstmt.executeQuery();
-
-    User user = new User();
-
-    if (rs.next() && rs.getString("uid").equals(whereVal)) {
-      user.setUsername(rs.getString("username"));
-      user.setPassword(rs.getString("userPassword"));
-      user.setUid(rs.getString("uid"));
-    }
-
-    conn.close();
-
-    return user;
-  }
-
   @Override
-  public User add(UserRequest userRequest) throws IOException {
+  public void add(UserRequest userRequest) throws IOException {
     String query = "INSERT INTO user (user_id, username, password) VALUES (UUID_TO_BIN(?), ?, ?);";
 
     final String username = userRequest.getUsername();
     final String password = userRequest.getPassword();
     String uid = UUID.randomUUID().toString();
-
-    User user = new User();
-    user.setUid(uid);
-    user.setUsername(username);
-    user.setPassword(password);
 
     try {
       Connection conn = db.getConnection();
@@ -66,7 +41,6 @@ public class UserRepositoryInteractor implements UserRepository {
 
       conn.close();
 
-      return user;
     } catch (SQLException e) {
       throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
@@ -74,10 +48,26 @@ public class UserRepositoryInteractor implements UserRepository {
 
   @Override
   public User findByUID(String uid) throws IOException {
-    String query = "SELECT * FROM user WHERE uid = " + "?" + ";";
+    String query = "SELECT BIN_TO_UUID(user_id) as uid, username, password FROM user WHERE uid = BIN_TO_UUID(?);";
 
     try {
-      return getUserFromDb(query, uid);
+      Connection conn = db.getConnection();
+
+      PreparedStatement pstmt = conn.prepareStatement(query);
+      pstmt.setString(1, uid);
+      ResultSet rs = pstmt.executeQuery();
+
+      User user = new User();
+
+      if (rs.next()) {
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setUid(rs.getString("uid"));
+      }
+
+      conn.close();
+
+      return user;
     } catch (SQLException e) {
       throw new IOException("Could not find user by uid");
     }
@@ -85,12 +75,28 @@ public class UserRepositoryInteractor implements UserRepository {
 
   @Override
   public User findByUsername(String username) throws IOException {
-    String query = "SELECT * FROM user WHERE username = ?;";
+    String query = "SELECT BIN_TO_UUID(user_id) as uid, username, password FROM user WHERE username = ?;";
 
     try {
-      return getUserFromDb(query, username);
+      Connection conn = db.getConnection();
+
+      PreparedStatement pstmt = conn.prepareStatement(query);
+      pstmt.setString(1, username);
+      ResultSet rs = pstmt.executeQuery();
+
+      User user = new User();
+
+      if (rs.next()) {
+        user.setUsername(rs.getString("username"));
+        user.setPassword(rs.getString("password"));
+        user.setUid(rs.getString("uid"));
+      }
+
+      conn.close();
+
+      return user;
     } catch (SQLException e) {
-      throw new IOException("Could not find user by username");
+      throw new IOException("Could not find user by username: " + e.getMessage());
     }
   }
 

@@ -4,13 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import com.splitscale.ditabys.config.DBConfig;
+import com.splitscale.ditabys.config.DBconfig;
 
 public class DatabaseDriver {
 
-  private DBConfig config;
+  private DBconfig config;
 
-  public DatabaseDriver(DBConfig config) {
+  public DatabaseDriver(DBconfig config) {
     this.config = config;
   }
 

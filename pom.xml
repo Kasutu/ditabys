@@ -18,7 +18,7 @@
   </properties>
 
   <dependencies>
-
+ 
     <dependency>
       <groupId>com.splitscale.fordastore.core</groupId>
       <artifactId>fordastore-core</artifactId>
@@ -38,6 +38,8 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>8.0.31</version>
     </dependency>
+
+
 
   </dependencies>
 
