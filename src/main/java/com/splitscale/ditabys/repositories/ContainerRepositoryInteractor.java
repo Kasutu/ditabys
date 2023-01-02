@@ -55,7 +55,7 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public void delete(long containerId) throws IOException {
+  public void delete(Long containerId) throws IOException {
     String query = "DELETE FROM container WHERE container_id = ?";
 
     try {
@@ -74,14 +74,14 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public Container getByContainerID(long container_id) throws IOException {
+  public Container getByContainerID(long containerId) throws IOException {
     final String query = "Select * From container WHERE container_id = ?";
     Container container = new Container();
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setLong(1, container_id);
+      pstmt.setLong(1, containerId);
       ResultSet rs = pstmt.executeQuery();
 
       if (rs.next()) {
@@ -96,14 +96,14 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public Container getByUid(String user_id) throws IOException {
+  public Container getByUid(String userId) throws IOException {
     final String query = "Select * From user WHERE user_id = UUID_TO_BIN(?)";
     Container container = new Container();
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, user_id);
+      pstmt.setString(1, userId);
       ResultSet rs = pstmt.executeQuery();
 
       if (rs.next()) {
@@ -118,13 +118,13 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public List<Container> getListByName(String container_title) throws IOException {
+  public List<Container> getListByName(String containerTitle) throws IOException {
     final String query = "SELECT * FROM container WHERE container_title LIKE ?";
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, "%" + container_title + "%");
+      pstmt.setString(1, "%" + containerTitle + "%");
       ResultSet rs = pstmt.executeQuery();
       List<Container> containers = new ArrayList<>();
 
@@ -141,13 +141,13 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public List<Container> getListByUid(String container_id) throws IOException {
+  public List<Container> getListByUid(String containerId) throws IOException {
     final String query = "SELECT * FROM container WHERE container_id = ?";
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, container_id);
+      pstmt.setString(1, containerId);
       ResultSet rs = pstmt.executeQuery();
       List<Container> containers = new ArrayList<>();
 
@@ -178,5 +178,4 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
       throw new IOException("Unable to update Container");
     }
   }
-
 }
