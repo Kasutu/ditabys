@@ -12,7 +12,6 @@ import java.util.List;
 import com.splitscale.ditabys.driver.DatabaseDriver;
 import com.splitscale.ditabys.driver.StoreDbDriver;
 import com.splitscale.fordastore.core.container.Container;
-import com.splitscale.fordastore.core.container.ContainerRequest;
 import com.splitscale.fordastore.core.repositories.ContainerRepository;
 
 public class ContainerRepositoryInteractor implements ContainerRepository {
@@ -23,32 +22,31 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public void add(ContainerRequest containerRequest) throws IOException {
+  public Container add(String containerName, String uid) throws IOException {
     final String query = "INSERT INTO container (container_id, container_title, user_id) VALUES (null,?,UUID_TO_BIN(?))";
 
-    final String containerTitle = containerRequest.getName();
-    final String userId = containerRequest.getUid();
-
     Container container = new Container();
-    container.setName(containerTitle);
-    container.setUid(userId);
+    container.setUid(uid);
+    container.setName(containerName);
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-      pstmt.setString(1, containerTitle);
-      pstmt.setString(2, userId);
+      pstmt.setString(1, containerName);
+      pstmt.setString(2, uid);
 
-      int rowAffected = pstmt.executeUpdate();
-      if (rowAffected == 1) {
-        ResultSet rs = pstmt.getGeneratedKeys();
-        if (rs.next()) {
-          long id = rs.getLong(1);
-          container.setContainerID(id);
-        }
+      pstmt.executeUpdate();
+
+      ResultSet rs = pstmt.getGeneratedKeys();
+
+      if (rs.next()) {
+        long id = rs.getLong(1);
+
+        container.setContainerID(id);
       }
 
       conn.close();
+      return container;
     } catch (SQLException e) {
       throw new IOException("Could not add a new container to database" + e.getMessage());
     }
@@ -165,15 +163,18 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public void update(Container container) throws IOException {
+  public void update(String containerName, Long containerId) throws IOException {
     final String query = "UPDATE container SET container_title = ? WHERE container_id = ?";
 
     try {
       Connection conn = db.getConnection();
+
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, container.getName());
-      pstmt.setLong(2, container.getContainerID());
+      pstmt.setString(1, containerName);
+      pstmt.setLong(2, containerId);
       pstmt.executeUpdate();
+
+      conn.close();
     } catch (SQLException e) {
       throw new IOException("Unable to update Container");
     }

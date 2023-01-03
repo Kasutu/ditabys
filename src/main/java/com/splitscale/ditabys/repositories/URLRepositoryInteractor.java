@@ -12,7 +12,6 @@ import com.splitscale.ditabys.driver.DatabaseDriver;
 import com.splitscale.ditabys.driver.StoreDbDriver;
 import com.splitscale.fordastore.core.repositories.UrlRepository;
 import com.splitscale.fordastore.core.url.Url;
-import com.splitscale.fordastore.core.url.UrlRequest;
 
 public class URLRepositoryInteractor implements UrlRepository {
   DatabaseDriver db;
@@ -22,27 +21,39 @@ public class URLRepositoryInteractor implements UrlRepository {
   }
 
   @Override
-  public void add(UrlRequest urlRequest) throws IOException {
+  public Url add(String innerUrl, Long containerId) throws IOException {
     String query = "INSERT INTO url (container_id, url) VALUES (?,?);";
+
+    Url url = new Url();
+
+    url.setInnerUrl(innerUrl);
+    url.setContainerID(containerId);
 
     try {
       Connection conn = db.getConnection();
 
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setLong(1, urlRequest.getContainerID());
-      pstmt.setString(2, urlRequest.getInnerUrl());
+      pstmt.setLong(1, containerId);
+      pstmt.setString(2, innerUrl);
 
       pstmt.executeUpdate();
+      ResultSet rs = pstmt.getGeneratedKeys();
+
+      if (rs.next()) {
+        long id = rs.getLong(1);
+
+        url.setUrlID(id);
+      }
 
       conn.close();
-
+      return url;
     } catch (SQLException e) {
       throw new IOException("Could not add url: " + e.getMessage());
     }
   }
 
   @Override
-  public void delete(long urlID) throws IOException {
+  public void deleteByUrlId(long urlID) throws IOException {
     String query = "DELETE FROM url WHERE url_id = ?";
 
     try {
@@ -61,15 +72,15 @@ public class URLRepositoryInteractor implements UrlRepository {
   }
 
   @Override
-  public void update(Url url) throws IOException {
+  public void update(String innerUrl, Long urlId) throws IOException {
     String query = "UPDATE url SET url = ? WHERE url_id = ?";
 
     try {
       Connection conn = db.getConnection();
 
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, url.getInnerUrl());
-      pstmt.setLong(2, url.getUrlID());
+      pstmt.setString(1, innerUrl);
+      pstmt.setLong(2, urlId);
 
       pstmt.executeUpdate();
 

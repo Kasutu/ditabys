@@ -11,17 +11,14 @@ import org.junit.Test;
 
 import com.splitscale.ditabys.repositories.ContainerRepositoryInteractor;
 import com.splitscale.fordastore.core.container.Container;
-import com.splitscale.fordastore.core.container.ContainerRequest;
 import com.splitscale.fordastore.core.repositories.ContainerRepository;
 
 public class ContainerRepoTest {
   @Test
   public void shouldAddContainerSuccessfully() {
-    ContainerRequest containerRequest = new ContainerRequest("e7f60aa1-cc65-44bd-9150-2d9da00cef5b", "title");
     ContainerRepository repo = new ContainerRepositoryInteractor();
 
-    assertDoesNotThrow(() -> repo.add(containerRequest));
-
+    assertDoesNotThrow(() -> repo.add("title", "e7f60aa1-cc65-44bd-9150-2d9da00cef5b"));
   }
 
   @Test
@@ -66,14 +63,10 @@ public class ContainerRepoTest {
 
   @Test
   public void shouldUpdateContainerSuccessfully() throws IOException {
-    ContainerRequest containerRequest = new ContainerRequest("e7f60aa1-cc65-44bd-9150-2d9da00cef5b", "title");
     ContainerRepository repo = new ContainerRepositoryInteractor();
 
-    Container container = new Container();
-    container.setName("Wow");
-
-    repo.add(containerRequest);
-    assertDoesNotThrow(() -> repo.update(container));
+    repo.add("title", "e7f60aa1-cc65-44bd-9150-2d9da00cef5b");
+    assertDoesNotThrow(() -> repo.update("new title", 1L));
 
   }
 }

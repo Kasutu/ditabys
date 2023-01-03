@@ -16,24 +16,18 @@ public class URLRepoTest {
 
   @Test
   public void shouldAddURLSuccessfully() throws IOException {
-    UrlRequest urlRequest = new UrlRequest(containerId, "twitter.com/home");
     UrlRepository repo = new URLRepositoryInteractor();
 
-    assertDoesNotThrow(() -> repo.add(urlRequest));
+    assertDoesNotThrow(() -> repo.add("twitter.com/home", containerId));
   }
 
   @Test
   public void shouldUpdateURLSuccessfully() throws IOException {
-    UrlRequest urlRequest = new UrlRequest(containerId, "twitter.com/home");
     UrlRepository repo = new URLRepositoryInteractor();
 
-    Url url = new Url();
-    url.setInnerUrl("www.splitscale.com");
-    url.setUrlID(2L);
+    repo.add("twitter.com/home", containerId);
 
-    repo.add(urlRequest);
-
-    assertDoesNotThrow(() -> repo.update(url));
+    assertDoesNotThrow(() -> repo.update("twitter.com/home", 2L));
   }
 
   @Test
@@ -54,6 +48,6 @@ public class URLRepoTest {
   public void shouldDeleteURLSuccessfully() throws IOException {
     UrlRepository repo = new URLRepositoryInteractor();
 
-    assertDoesNotThrow(() -> repo.delete(2L));
+    assertDoesNotThrow(() -> repo.deleteByUrlId(2L));
   }
 }

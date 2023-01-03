@@ -11,7 +11,6 @@ import com.splitscale.ditabys.driver.DatabaseDriver;
 import com.splitscale.ditabys.driver.StoreDbDriver;
 import com.splitscale.fordastore.core.repositories.UserRepository;
 import com.splitscale.fordastore.core.user.User;
-import com.splitscale.fordastore.core.user.UserRequest;
 
 public class UserRepositoryInteractor implements UserRepository {
 
@@ -22,12 +21,12 @@ public class UserRepositoryInteractor implements UserRepository {
   }
 
   @Override
-  public void add(UserRequest userRequest) throws IOException {
+  public User add(String username, String password) throws IOException {
     String query = "INSERT INTO user (user_id, username, password) VALUES (UUID_TO_BIN(?), ?, ?);";
 
-    final String username = userRequest.getUsername();
-    final String password = userRequest.getPassword();
     String uid = UUID.randomUUID().toString();
+
+    User user = new User(uid, username, password);
 
     try {
       Connection conn = db.getConnection();
@@ -41,6 +40,7 @@ public class UserRepositoryInteractor implements UserRepository {
 
       conn.close();
 
+      return user;
     } catch (SQLException e) {
       throw new IOException("Could not add user to database due to server error: " + e.getMessage());
     }
@@ -101,27 +101,22 @@ public class UserRepositoryInteractor implements UserRepository {
   }
 
   @Override
-  public boolean update(Long id, UserRequest userRequest) throws IOException {
-    final String query = "UPDATE user SET username = ?, password = ? WHERE user_id = ?;";
-
-    final String username = userRequest.getUsername();
-    final String password = userRequest.getPassword();
-
-    Connection conn;
+  public User update(String uid, String username, String password) throws IOException {
+    final String query = "UPDATE user SET username = ?, password = ? WHERE user_id = UUID_TO_BIN(?);";
 
     try {
-      conn = db.getConnection();
+      Connection conn = db.getConnection();
 
       PreparedStatement pstmt = conn.prepareStatement(query);
       pstmt.setString(1, username);
       pstmt.setString(2, password);
-      pstmt.setLong(3, id);
+      pstmt.setString(3, uid);
 
       pstmt.executeUpdate();
 
       conn.close();
 
-      return true;
+      return new User(uid, username, password);
     } catch (SQLException e) {
       throw new IOException("Failed to update user");
     }
