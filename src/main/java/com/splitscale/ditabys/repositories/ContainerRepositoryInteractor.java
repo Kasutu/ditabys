@@ -107,6 +107,7 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
       if (rs.next()) {
         container.setUid(rs.getString("user_id"));
       }
+
       conn.close();
       return container;
 
@@ -139,26 +140,32 @@ public class ContainerRepositoryInteractor implements ContainerRepository {
   }
 
   @Override
-  public List<Container> getListByUid(String containerId) throws IOException {
-    final String query = "SELECT * FROM container WHERE container_id = ?";
+  public List<Container> getListByUid(String uid) throws IOException {
+    final String query = "SELECT container_id, BIN_TO_UUID(user_id) as user_id, container_title FROM container WHERE user_id = UUID_TO_BIN(?)";
 
     try {
       Connection conn = db.getConnection();
       PreparedStatement pstmt = conn.prepareStatement(query);
-      pstmt.setString(1, containerId);
+      pstmt.setString(1, uid);
+
       ResultSet rs = pstmt.executeQuery();
+
       List<Container> containers = new ArrayList<>();
 
       while (rs.next()) {
         Container container = new Container();
-        container.setName(rs.getString("container_id"));
+
+        container.setContainerID(rs.getLong("container_id"));
+        container.setName(rs.getString("container_title"));
+        container.setUid(rs.getString("user_id"));
+
         containers.add(container);
       }
+
       conn.close();
       return containers;
-
     } catch (SQLException e) {
-      throw new IOException("Could not get a list of this UID");
+      throw new IOException("Could not get a list of this UID: " + e.getMessage());
     }
   }
 
