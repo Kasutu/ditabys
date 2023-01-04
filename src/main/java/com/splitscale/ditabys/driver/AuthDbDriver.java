@@ -5,7 +5,7 @@ import com.splitscale.ditabys.config.PropsLoader;
 public class AuthDbDriver extends DatabaseDriver {
 
   public AuthDbDriver() {
-    super(PropsLoader.loadProps("src/main/resources/auth-db.properties"));
+    super(PropsLoader.loadProps("./auth-db.properties"));
   }
 
 }
