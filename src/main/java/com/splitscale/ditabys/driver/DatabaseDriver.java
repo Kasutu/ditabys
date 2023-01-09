@@ -20,6 +20,8 @@ public class DatabaseDriver {
     String user = config.getUsername();
     String password = config.getPassword();
 
+    System.out.println("Using url: " + url);
+
     // create a connection to the database
     return DriverManager.getConnection(url, user, password);
   }
