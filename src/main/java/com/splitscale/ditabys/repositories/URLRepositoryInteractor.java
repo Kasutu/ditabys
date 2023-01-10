@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class URLRepositoryInteractor implements UrlRepository {
     try {
       Connection conn = db.getConnection();
 
-      PreparedStatement pstmt = conn.prepareStatement(query);
+      PreparedStatement pstmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
       pstmt.setLong(1, containerId);
       pstmt.setString(2, innerUrl);
 
